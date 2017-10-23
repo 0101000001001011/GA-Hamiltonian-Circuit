@@ -8,6 +8,7 @@
  *
  *  Methods:
  *      # Public
+ *      -   void randomizeCities()          -> Randomize all cities X and Y positions
  *      -   void initMap()                  -> Initializate all cities distances
  *      -   int getDistanceFrom(int, int)   -> Return distance between two cities   
  *      -   int[][] getCities()             -> Return this.cities
@@ -18,10 +19,11 @@
  */
 
 import java.text.*;
+import java.util.Random;
 
 public final class CitiesMap{
 
-    private final static int[][] cities = {{768,135},
+    private static int[][] cities = {{768,135},
         {570,166},{69,145},{462,99},{742,100},
         {70,171},{700,371},{468,535},{830,324},
         {701,254},{63,457},{685,344},{105,242},
@@ -32,12 +34,26 @@ public final class CitiesMap{
     
     private CitiesMap(){}
     
+    public static void randomizeCities(){
+        CitiesMap.cities = new int[Main.cityNumber][2];
+        
+        Random rand = new Random();
+        
+        for(int i=0;i<Main.cityNumber;i++){
+            int x = rand.nextInt(825)+25;
+            int y = rand.nextInt(525)+25;
+            
+            CitiesMap.cities[i][0] = x;
+            CitiesMap.cities[i][1] = y;
+        }
+    }
+    
     public static void initMap(){        
         /*
          *  Code to generate random cities 
          *
          * java.util.Random rand = new java.util.Random();
-         * for(int i=0;i<17;i++){
+         * for(int i=0;i<Main.cityNumber;i++){
          *    int a = rand.nextInt(825)+25;
          *    int b = rand.nextInt(525)+25;
          *   
@@ -46,13 +62,15 @@ public final class CitiesMap{
          *}
          */
          
-        CitiesMap.map = new int[17][];
+        CitiesMap.map = new int[Main.cityNumber][];
         
-        for(int i=0;i<17;i++){
+        for(int i=0;i<Main.cityNumber;i++){
             CitiesMap.map[i] = new int[i+1];
             for(int j=0;j<i+1;j++){
                 CitiesMap.map[i][j] = CitiesMap.calculateDistance(i,j);
+                //System.out.print(CitiesMap.map[i][j]+" ");
             }
+            //System.out.println();
         }
     }
     

@@ -24,6 +24,11 @@ public class Main{
     public static double crossoverProb = 0.6;
     public static int mutationProb = 20;
     public static int waitTime = 10;
+    public static int cityNumber = 17;
+    public static int maxBest = 2274;
+    public static int maxIteration = 1000;
+    public static boolean toInfinite = false;
+    public static boolean cheat = false;
 
     public static List<Circuit> makeTournament(List<Circuit> population){
         Random rand = new Random();
@@ -35,7 +40,9 @@ public class Main{
         for(int i=0;i<membersNumb;i++){
             int member = rand.nextInt(population.size());
             tournament.add(population.get(member));
-            population.remove(member);
+            if(!cheat){
+                population.remove(member);
+            }
         }
             
         Collections.sort(tournament, Circuit.circuitComparator);
@@ -44,7 +51,12 @@ public class Main{
     }
 
     public static void main(String[] args){
-    
+        Args.parseArgs(args);
+        
+        if(cheat){
+            populationSize = 30;
+        }
+        
         // Initializiation of GUI
         JFrame testFrame = new JFrame();
         testFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -73,13 +85,10 @@ public class Main{
         
         
         int iteration = 0;
-        
-        // In this case
-        int maxBest = 2274;
-        int actualBest = 10000;
+        int actualBest = 1000000;
         
         // Until it find the best solution
-        while(actualBest>maxBest){
+        while(toInfinite || (iteration<maxIteration && actualBest>maxBest)){
         
             List<Circuit> nextGeneration = new ArrayList<Circuit>();
                 
@@ -131,11 +140,13 @@ public class Main{
             
             Collections.shuffle(population);
             
-            try {
-                Thread.sleep(waitTime);
-            } catch(InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }    
+            if(waitTime != 0){
+                try {
+                    Thread.sleep(waitTime);
+                } catch(InterruptedException ex) {
+                    Thread.currentThread().interrupt();
+                }   
+            }
             
             iteration++;
         }

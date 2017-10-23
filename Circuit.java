@@ -28,14 +28,20 @@ import java.util.Random;
 
 public class Circuit implements Comparable<Circuit>{
     
-    private int[] path = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16};
+    private int[] path;
 
     //Random constructor
     public Circuit(){
         Random rand = new Random();
         
-        for(int i=0;i<17;i++){
-            int randPos = rand.nextInt(17);
+        this.path = new int[Main.cityNumber];
+        
+        for(int i=0;i<Main.cityNumber;i++){
+            this.path[i] = i;
+        }
+        
+        for(int i=0;i<Main.cityNumber;i++){
+            int randPos = rand.nextInt(Main.cityNumber);
             
             int swap = this.path[i];
             this.path[i] = this.path[randPos];
@@ -49,15 +55,15 @@ public class Circuit implements Comparable<Circuit>{
         
         this.path = parentOne.clone();
         
-        int from = rand.nextInt(15);
-        int to = rand.nextInt((int)(17*0.6))+from+1;
-        if(to > 16){ to=16; }
+        int from = rand.nextInt(Main.cityNumber-2);
+        int to = rand.nextInt((int)(Main.cityNumber*Main.crossoverProb))+from+1;
+        if(to > Main.cityNumber-1){ to=Main.cityNumber-1; }
         
         for(int i=from;i<to;i++){
             int search = parentTwo[i];
             
             int j = 0;
-            while(j<17){
+            while(j<Main.cityNumber){
                 if(parentOne[j] == search){
                     int swap = this.path[i];
                     this.path[i] = this.path[j];
@@ -76,11 +82,16 @@ public class Circuit implements Comparable<Circuit>{
         Random rand = new Random();
         
         this.path = toMutate.clone();
-        int mutations = (int)(17*0.2);
+        
+        // Casting to avoid troubles
+        double cityNumber = (double)(Main.cityNumber);
+        double mutationtProb = (double)(Main.mutationProb)/100;
+        
+        int mutations = (int)(cityNumber*mutationtProb);
         
         for(int i=0;i<mutations;i++){
-            int randPos1 = rand.nextInt(17);
-            int randPos2 = rand.nextInt(17);
+            int randPos1 = rand.nextInt(Main.cityNumber);
+            int randPos2 = rand.nextInt(Main.cityNumber);
             
             int swap = this.path[randPos1];
             this.path[randPos1] = this.path[randPos2];
@@ -90,8 +101,8 @@ public class Circuit implements Comparable<Circuit>{
     
     public int getPathLenght(){
         int pathLenght = 0;
-        for(int i=0;i<17;i++){
-            if(i==16){
+        for(int i=0;i<Main.cityNumber;i++){
+            if(i==Main.cityNumber-1){
                 pathLenght += CitiesMap.getDistanceFrom(this.path[i], this.path[0]);
             }else{
                 pathLenght += CitiesMap.getDistanceFrom(this.path[i], this.path[i+1]);
@@ -111,11 +122,11 @@ public class Circuit implements Comparable<Circuit>{
         
         comp.setPathDistance(this.getPathLenght());
         
-        for(int i=0;i<17;i++){
+        for(int i=0;i<Main.cityNumber;i++){
             int x1,x2,y1,y2, distance;
             x2 = cities[this.path[i]][0];
             y2 = cities[this.path[i]][1];
-            if(i==16){
+            if(i==Main.cityNumber-1){
                 x1 = cities[this.path[0]][0];
                 y1 = cities[this.path[0]][1];
                 distance = CitiesMap.getDistanceFrom(this.path[i], this.path[0]);
