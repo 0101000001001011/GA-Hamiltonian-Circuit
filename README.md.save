@@ -13,9 +13,8 @@ Java Development Kit
 ### Run
 
 ```
-Usage: java Main <parameters>
+java Main <parameters>
 
-Possible parameters:
     | --help:       Print this :)
     | -r,--random:  Randomize city position
     | --infinite:   Loops until you press Ctrl+C
@@ -25,5 +24,4 @@ Possible parameters:
     | -i [n]:       Set the max iterations              Default:1000
     | -c [0-100]:   Set the crossover probability       Default:60%
     | -m [0-100]:   Set the mutation probability        Default:20%
-```
 
