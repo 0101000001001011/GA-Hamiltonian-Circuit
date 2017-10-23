@@ -23,7 +23,7 @@ public class Main{
     public static int populationSize = 60;
     public static double crossoverProb = 0.6;
     public static int mutationProb = 20;
-    public static int waitTime = 10;
+    public static int waitTime = 100;
     public static int cityNumber = 17;
     public static int maxBest = 2274;
     public static int maxIteration = 1000;
